@@ -9,6 +9,16 @@ public class UserRequest {
 	}
 	
 	/**
+	 * Constructor
+	 * @param userName the user name
+	 * @param password the user's password
+	 */
+	public UserRequest(String userName, String password) {
+		this.userName = userName;
+		this.password = password;
+	}
+	
+	/**
 	 * @return the userName
 	 */
 	public String getUserName() {
