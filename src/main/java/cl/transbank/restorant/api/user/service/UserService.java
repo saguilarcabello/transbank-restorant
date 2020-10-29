@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import cl.transbank.restorant.api.user.User;
 import cl.transbank.restorant.api.user.UserRequest;
 import cl.transbank.restorant.api.user.UserResponse;
+import cl.transbank.restorant.api.user.util.PasswordUtil;
 
 @Service
 public class UserService implements UserServiceAuth {
@@ -38,8 +39,13 @@ public class UserService implements UserServiceAuth {
 	 * @return true if valid credentials, false if is not
 	 */
 	private boolean validateUser(UserRequest userRequest, User user) {
-		String passwordEncripted = userRequest.getPassword();
-		if (passwordEncripted.equals(user.getPassword())) {
+		boolean passwordMatch = PasswordUtil.verifyUserPassword(
+				userRequest.getPassword(), 
+				user.getPassword(), 
+				user.getSalt()
+		);
+		
+		if (passwordMatch) {
 			return true;
 		}
 		return false;
@@ -54,7 +60,12 @@ public class UserService implements UserServiceAuth {
 	private User findByUserName(String userName) {
 		
 		//Default user get from the storage location
-		User user = new User("jhonDoe", "Jhon Doe", "jhon.doe@mail.com", "123456");
+		User user = new User("jhonDoe", 
+				"Jhon Doe", 
+				"jhon.doe@mail.com", 
+				"V+WrOR5BFiAMrixO9uekgi4t7/puFB/BUImO1poScos=", 
+				"AxP6y6I10FRoFp36FMtNmDjz6dsuHj"
+			);
 		
 		//emulate if the user is found on the list of users
 		User userResponse = null;

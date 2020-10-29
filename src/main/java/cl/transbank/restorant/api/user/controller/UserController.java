@@ -32,7 +32,6 @@ public class UserController {
 		try {
 			user = service.login(userRequest);
 		} catch (UserException e) {
-			System.out.println(e.getCause());
 			throw new ResponseStatusException(
 			           HttpStatus.FORBIDDEN, e.getMessage(), e);
 		}
