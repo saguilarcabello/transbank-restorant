@@ -24,6 +24,12 @@ public class SaleService implements SaleServiceData {
 	@Autowired
 	private JmsTemplate jmsTemplate;
 	
+	
+	public SaleService(JmsTemplate jmsTemplate) {
+		this.jmsTemplate = jmsTemplate;
+	}
+	
+
 	@Override
 	public void saveNewSale(Sale sale) {
 		LOGGER.info("Sending Message");
@@ -42,6 +48,7 @@ public class SaleService implements SaleServiceData {
 		return salesOfDay;
 	}
 	
+	@Override
 	@JmsListener(destination ="jms.message.endpoint")
 	public void receiveMessage(Sale sale) {
 		LOGGER.info("Receive Message");

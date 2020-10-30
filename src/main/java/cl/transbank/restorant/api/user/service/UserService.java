@@ -6,56 +6,33 @@ import org.springframework.stereotype.Service;
 
 import cl.transbank.restorant.api.sale.service.SaleService;
 import cl.transbank.restorant.api.user.User;
-import cl.transbank.restorant.api.user.UserRequest;
-import cl.transbank.restorant.api.user.UserResponse;
-import cl.transbank.restorant.api.user.util.PasswordUtil;
+import cl.transbank.restorant.security.ApplicationUser;
 
 @Service
 public class UserService implements UserServiceAuth {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SaleService.class);
 	private final static String MSG_INVALID_CREDENTIALS = "Credenciales inválidas";
+	
 
-	/* (non-Javadoc)
-	 * @see cl.transbank.restorant.api.user.service.UserServiceAuth#login(cl.transbank.restorant.api.user.UserRequest)
-	 */
 	@Override
-	public UserResponse login(UserRequest userRequest) throws UserException {
+	public ApplicationUser login(String userName) throws UserException {
 		LOGGER.info("user login");
 		
-		User user = findByUserName(userRequest.getUserName());
+		User user = findByUserName(userName);
 		if (user == null) {
-			LOGGER.error(String.format("user not found: %s", userRequest.getUserName()));
+			LOGGER.error(String.format("user not found: %s", userName));
 			throw new UserException(MSG_INVALID_CREDENTIALS);
 		}
-		
-		if (!validateUser(userRequest, user)) {
-			LOGGER.error(String.format("invalid password for user: %s", userRequest.getUserName()));
-			throw new UserException(MSG_INVALID_CREDENTIALS);
-		}
-		
-		UserResponse userResponse = new UserResponse(user.getName(), user.getEmail());
+			
+		ApplicationUser userResponse = new ApplicationUser(
+				user.getPassword(),
+				user.getUserName(),
+				true,
+				true,
+				true,
+				true);
 		return userResponse;
-	}
-	
-	
-	/**
-	 * Validate if the password is the same registered value
-	 * @param userRequest user request object
-	 * @param user user object
-	 * @return true if valid credentials, false if is not
-	 */
-	private boolean validateUser(UserRequest userRequest, User user) {
-		boolean passwordMatch = PasswordUtil.verifyUserPassword(
-				userRequest.getPassword(), 
-				user.getPassword(), 
-				user.getSalt()
-		);
-		
-		if (passwordMatch) {
-			return true;
-		}
-		return false;
 	}
 	
 	
@@ -70,8 +47,7 @@ public class UserService implements UserServiceAuth {
 		User user = new User("jhonDoe", 
 				"Jhon Doe", 
 				"jhon.doe@mail.com", 
-				"V+WrOR5BFiAMrixO9uekgi4t7/puFB/BUImO1poScos=", 
-				"AxP6y6I10FRoFp36FMtNmDjz6dsuHj"
+				"$2a$10$2LJO7/1wyPT1HO54E/R9pumxWV/9Js3WHT5LM/5R92v0eOqrX0ryu"
 			);
 		
 		//emulate if the user is found on the list of users

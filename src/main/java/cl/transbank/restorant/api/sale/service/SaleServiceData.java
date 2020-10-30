@@ -7,4 +7,5 @@ import cl.transbank.restorant.api.sale.Sale;
 public interface SaleServiceData {
 	void saveNewSale(Sale sale);
 	List<Sale> getSales(String day);
+	void receiveMessage(Sale sale);
 }

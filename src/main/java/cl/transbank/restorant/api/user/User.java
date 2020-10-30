@@ -4,7 +4,6 @@ public class User {
 	private String userName;
 	private String name;
 	private String password;
-	private String salt;
 	private String email;
 	
 	/**
@@ -21,12 +20,11 @@ public class User {
 	 * @param password user password
 	 * @param salt salt password
 	 */
-	public User(String userName, String name, String email, String password, String salt) {
+	public User(String userName, String name, String email, String password) {
 		this.userName = userName;
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.salt = salt;
 	}
 
 	/**
@@ -71,19 +69,6 @@ public class User {
 		this.password = password;
 	}
 
-	/**
-	 * @return the salt
-	 */
-	public String getSalt() {
-		return salt;
-	}
-
-	/**
-	 * @param salt the salt to set
-	 */
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
 
 	/**
 	 * @return the email
