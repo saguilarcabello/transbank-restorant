@@ -1,7 +1,10 @@
 package cl.transbank.restorant.api.user.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import cl.transbank.restorant.api.sale.service.SaleService;
 import cl.transbank.restorant.api.user.User;
 import cl.transbank.restorant.api.user.UserRequest;
 import cl.transbank.restorant.api.user.UserResponse;
@@ -10,6 +13,7 @@ import cl.transbank.restorant.api.user.util.PasswordUtil;
 @Service
 public class UserService implements UserServiceAuth {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SaleService.class);
 	private final static String MSG_INVALID_CREDENTIALS = "Credenciales inválidas";
 
 	/* (non-Javadoc)
@@ -17,13 +21,16 @@ public class UserService implements UserServiceAuth {
 	 */
 	@Override
 	public UserResponse login(UserRequest userRequest) throws UserException {
+		LOGGER.info("user login");
 		
 		User user = findByUserName(userRequest.getUserName());
 		if (user == null) {
+			LOGGER.error(String.format("user not found: %s", userRequest.getUserName()));
 			throw new UserException(MSG_INVALID_CREDENTIALS);
 		}
 		
 		if (!validateUser(userRequest, user)) {
+			LOGGER.error(String.format("invalid password for user: %s", userRequest.getUserName()));
 			throw new UserException(MSG_INVALID_CREDENTIALS);
 		}
 		

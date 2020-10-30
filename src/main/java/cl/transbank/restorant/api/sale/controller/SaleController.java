@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.transbank.restorant.api.sale.Sale;
-import cl.transbank.restorant.api.sale.SaleRequest;
 import cl.transbank.restorant.api.sale.service.SaleServiceData;
 
 @RestController
@@ -30,8 +30,19 @@ public class SaleController {
 		return "";
 	}
 	
-	@GetMapping("")
-	public List<Sale> getSales(@RequestBody SaleRequest day) {
+	@GetMapping("/{date}")
+	public List<Sale> getSales(@PathVariable("date") String day) {
 		return service.getSales(day);
+	}
+	
+	
+	@PostMapping("/concurrentLoad/{quantity}")
+	public String concurrentLoad(@PathVariable("quantity") int quantity, @RequestBody Sale sale) {
+		
+		for(int x = 0; x < quantity; x++) {
+			sale.setDiningRoomTable("" + x);
+			service.saveNewSale(sale);
+		}
+		return "";
 	}
 }
