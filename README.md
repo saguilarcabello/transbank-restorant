@@ -133,3 +133,15 @@ Para probar una carga masiva de datos, en el ejemplo creará 10 ventas, el núme
 
 El proyecto genera una cola JMS al momento de grabar una venta, contiene un listener que escucha esta petición y graba la venta en memoria.
 El endpoint ```concurrentLoad``` simula una carga masiva de datos a la cola.
+
+
+## Docker
+
+El proyecto se puede levantar desde un contenedor docker
+
+```
+docker build --build-arg JAR_FILE=build/libs/*.jar -t transbank/restorant .
+```
+```
+docker run -p 8080:8080 transbank/restorant
+```
