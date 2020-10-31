@@ -6,10 +6,20 @@ public class Product {
 	private String name;
 	private int price;
 	
+	/**
+	 * Constructor
+	 */
 	public Product() {
 		
 	}
 	
+	/**
+	 * Constructor
+	 * @param id Product id
+	 * @param quantity quantity of products
+	 * @param name description of product
+	 * @param price product price
+	 */
 	public Product(Integer id, int quantity, String name, int price) {
 		this.id = id;
 		this.quantity = quantity;
@@ -90,5 +100,4 @@ public class Product {
 		builder.append("]");
 		return builder.toString();
 	}
-	
 }

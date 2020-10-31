@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jms.core.JmsTemplate;
 
 import cl.transbank.restorant.api.sale.Product;
 import cl.transbank.restorant.api.sale.Sale;
@@ -16,13 +14,10 @@ import cl.transbank.restorant.api.sale.service.SaleServiceData;
 
 @SpringBootTest
 public class SaleServiceTest {
-	
-	@Mock
-	private JmsTemplate jmsTemplate ;
 
 	@Test
 	void postAndGetSaleOfDay() {
-		SaleServiceData service = new SaleService(jmsTemplate);
+		SaleServiceData service = new SaleService();
 		
 		Sale sale = new Sale();
 		sale.setDiningRoomTable("1");
@@ -44,4 +39,5 @@ public class SaleServiceTest {
 		Assertions.assertEquals(resultado.size(), 1);
 		Assertions.assertEquals(resultado.get(0).getTotal(), 4890);
 	}
+
 }

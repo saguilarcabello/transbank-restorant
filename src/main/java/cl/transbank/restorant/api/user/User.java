@@ -18,7 +18,6 @@ public class User {
 	 * @param name User name
 	 * @param email User email
 	 * @param password user password
-	 * @param salt salt password
 	 */
 	public User(String userName, String name, String email, String password) {
 		this.userName = userName;

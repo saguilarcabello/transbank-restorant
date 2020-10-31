@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import cl.transbank.restorant.api.user.service.UserException;
 import cl.transbank.restorant.api.user.service.UserServiceAuth;
 
 @Service
@@ -21,7 +22,13 @@ public class ApplicationUserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		return userService.login(userName);
+		ApplicationUser user = null;
+		try {
+			user = userService.login(userName);
+		} catch(UserException e) {
+			throw new UsernameNotFoundException(e.getMessage());
+		}
+		return user;
 	}
 
 }

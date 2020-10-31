@@ -15,6 +15,9 @@ public class UserService implements UserServiceAuth {
 	private final static String MSG_INVALID_CREDENTIALS = "Credenciales inválidas";
 	
 
+	/* (non-Javadoc)
+	 * @see cl.transbank.restorant.api.user.service.UserServiceAuth#login(java.lang.String)
+	 */
 	@Override
 	public ApplicationUser login(String userName) throws UserException {
 		LOGGER.info("user login");

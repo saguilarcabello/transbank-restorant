@@ -18,24 +18,38 @@ import cl.transbank.restorant.api.sale.Sale;
 public class SaleService implements SaleServiceData {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SaleService.class);
-
 	private static List<Sale> SALES = new ArrayList<Sale>();
-	
-	@Autowired
 	private JmsTemplate jmsTemplate;
 	
-	
+	/**
+	 * Constructor
+	 * @param jmsTemplate JMS template
+	 */
+	@Autowired
 	public SaleService(JmsTemplate jmsTemplate) {
 		this.jmsTemplate = jmsTemplate;
 	}
 	
+	/**
+	 * Constructor
+	 */
+	public SaleService() {
+		
+	}
+	
 
+	/* (non-Javadoc)
+	 * @see cl.transbank.restorant.api.sale.service.SaleServiceData#saveNewSale(cl.transbank.restorant.api.sale.Sale)
+	 */
 	@Override
 	public void saveNewSale(Sale sale) {
 		LOGGER.info("Sending Message");
 		jmsTemplate.convertAndSend("jms.message.endpoint", sale);
 	}
 
+	/* (non-Javadoc)
+	 * @see cl.transbank.restorant.api.sale.service.SaleServiceData#getSales(java.lang.String)
+	 */
 	@Override
 	public List<Sale> getSales(String day) {
 		LOGGER.info(String.format("retrieve data of date: %s", day));
@@ -48,6 +62,9 @@ public class SaleService implements SaleServiceData {
 		return salesOfDay;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cl.transbank.restorant.api.sale.service.SaleServiceData#receiveMessage(cl.transbank.restorant.api.sale.Sale)
+	 */
 	@Override
 	@JmsListener(destination ="jms.message.endpoint")
 	public void receiveMessage(Sale sale) {
